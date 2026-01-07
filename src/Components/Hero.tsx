@@ -1,8 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import "./App.css";
+import "../App.css";
+import NavBar from "./NavBar";
 
-const App = () => {
+const Hero = () => {
   // setting up states for every input
   const [count, setCount] = useState(0);
   const [age, setAge] = useState("");
@@ -10,6 +11,11 @@ const App = () => {
   const [height, setHeight] = useState("");
   const [gender, setGender] = useState("5");
   const [activity, setActivity] = useState("1.2")
+
+  function truncateNumber (value: number, decimals: number): number {
+    const factor = Math.pow(10, decimals)
+    return Math.floor(value * factor) / factor
+  }
 
   function handleCLick() {
     // making the strings to numbers to ts can detect errors
@@ -44,13 +50,15 @@ const App = () => {
       TDEE = BMR * 1.9
     }
 
-    setCount(TDEE)
+    const truncatedTDEE = truncateNumber(TDEE, 0)
+    setCount(truncatedTDEE)
 
   }
 
   return (
-    <main>
-      <h1 className="bg-amber-300">Välkommen till Matkalkyl på nytt!</h1>
+    <>
+    <NavBar />
+    <main className="flex justify-center">
       <section>
         <h2>Vänligen fyll i dina uppgifter</h2>
         <form action="" className=" w-100 h-100 flex flex-col gap-1">
@@ -102,11 +110,11 @@ const App = () => {
           <div className="w-20 h-20">
             <h3>Aktivitetsnivå</h3>
             <select name="" id="" value={activity} onChange={(e) => setActivity(e.target.value)} className="border" >
-              <option value="1.2">1.2</option>
-              <option value="1.375">1.375</option>
-              <option value="1.55">1.55</option>
-              <option value="1.725">1.725</option>
-              <option value="1.9">1.9</option>
+              <option value="1.2">1.2: Lite eller ingen träning</option>
+              <option value="1.375">1.375: Lätt tränning 1-3 ggr/veckan</option>
+              <option value="1.55">1.55: Medel tränning 3-5 ggr/veckan</option>
+              <option value="1.725">1.725: Hård Tränning 6-7 ggr/veckan</option>
+              <option value="1.9">1.9: Vädligt hård träning / fysiskt jobb</option>
             </select>
           </div>
         </form>
@@ -117,7 +125,8 @@ const App = () => {
         <p>Du ska äta {count} kalorier för att bibehålla din vikt</p>
       </section>
     </main>
+    </>
   );
 };
 
-export default App;
+export default Hero;
